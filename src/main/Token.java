@@ -3,13 +3,20 @@ package main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.CookieManager;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class Token {
 
     String[] tkk;
+    static final String COOKIES_HEADER = "Set-Cookie";
+    static CookieManager msCookieManager = new CookieManager();
 
     public Token() {
         getTKK();
@@ -23,6 +30,15 @@ public class Token {
             c.setRequestProperty("User-Agent","translator");
             int responseCode = c.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) { // success
+                // set cookies
+                Map<String, List<String>> headerFields = c.getHeaderFields();
+                List<String> cookiesHeader = headerFields.get(COOKIES_HEADER);
+                if (cookiesHeader != null) {
+                    for (String cookie : cookiesHeader) {
+                        msCookieManager.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
+                    }
+                }
+
                 BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
@@ -42,8 +58,12 @@ public class Token {
     }
 
     public String getToken(String str) {
-
         if (tkk == null && !getTKK()) return null;
+
+        Date date = new Date();
+        long time = date.getTime();
+        long now = (long) Math.floor((double) time / 3600000L);
+        if (!tkk[0].equals(String.valueOf(now)) && !getTKK()) return null;
 
         long b = Long.parseLong(tkk[0]);
 
