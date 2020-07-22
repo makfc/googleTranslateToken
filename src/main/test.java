@@ -27,7 +27,7 @@ public class test {
             URL translateURL = new URL(sb.toString());
 
             HttpURLConnection http = (HttpURLConnection) translateURL.openConnection();
-            http.setRequestProperty("User-Agent","translator");
+            http.setRequestProperty("User-Agent", "translator");
             http.setRequestProperty(
                     "Cookie",
                     join(";", msCookieManager.getCookieStore().getCookies())
@@ -58,7 +58,7 @@ public class test {
         }
     }
 
-    public static String join( CharSequence delimiter, Iterable tokens) {
+    public static String join(CharSequence delimiter, Iterable tokens) {
         final Iterator<?> it = tokens.iterator();
         if (!it.hasNext()) {
             return "";

@@ -27,7 +27,7 @@ public class Token {
         try {
             URL url = new URL("https://translate.google.com/");
             HttpURLConnection c = (HttpURLConnection) url.openConnection();
-            c.setRequestProperty("User-Agent","translator");
+            c.setRequestProperty("User-Agent", "translator");
             int responseCode = c.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) { // success
                 // set cookies
@@ -89,13 +89,13 @@ public class Token {
                 e.add(k & 63 | 128);
             }
         }
-        int a = (int)b;
+        int a = (int) b;
         for (int f = 0; f < e.size(); f++) {
             a += e.get(f);
             a = go(a, "+-a^+6");
         }
         a = go(a, "+-3^+b+-f");
-        a ^= (int)Long.parseLong(tkk[1]);
+        a ^= (int) Long.parseLong(tkk[1]);
         if (0 > a) {
             long aL = a & Integer.MAX_VALUE + 0x80000000L;
             aL %= 1e6;
@@ -106,7 +106,7 @@ public class Token {
         return a + "." + (a ^ b);
     }
 
-     private int go(long in, String b) {
+    private int go(long in, String b) {
         int out = (int) in;
         for (int c = 0; c < b.length() - 2; c += 3) {
             int d = b.charAt(c + 2);
